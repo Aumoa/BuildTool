@@ -89,6 +89,7 @@ public class ModuleRule
     public string RelativePath { get; set; }
     public TargetType TargetType { get; set; }
     public ModuleType ModuleType { get; set; }
+    public bool NonUnityBuild { get; set; }
 
     public List<string> PublicDependencyModuleNames { get; set; } = new();
     public List<string> PrivateDependencyModuleNames { get; set; } = new();
