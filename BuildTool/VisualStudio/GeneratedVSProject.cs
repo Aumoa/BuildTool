@@ -428,7 +428,7 @@ class GeneratedVSProject : IGeneratedProject
 				    InnerPropGroup.NewElement("PlatformToolset", VSVersion.GetPlatformToolsets());
 				    InnerPropGroup.NewElement("WholeProgramOptimization", Config.bWholeProgramOptimization.ToString());
 				    InnerPropGroup.NewElement("CharacterSet", "Unicode");
-				    InnerPropGroup.NewElement("EnableUnitySupport", Rule.NonUnityBuild.ToString());
+				    InnerPropGroup.NewElement("EnableUnitySupport", (!Rule.NonUnityBuild).ToString());
 			    }
 		    }
 
