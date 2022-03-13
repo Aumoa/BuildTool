@@ -93,7 +93,7 @@ class GeneratedVSSolution : IGeneratedSolution
                     "\tProjectSection(ProjectDependencies) = postProject\n" +
                     "\t\t{{{0}}} = {{{0}}}\n" +
                     "\tEndProjectSection\n",
-                    GeneratedProjects["Windows"].GeneratedGuid);
+                    GeneratedProjects[DependencyProject].GeneratedGuid);
             }
 
             string ProjectDeclare = string.Format("Project(\"{{{0}}}\") = \"{1}\", \"{2}\", \"{{{3}}}\"\n{4}EndProject", CppProjectGuid, Key, Value.ProjectFile, Value.GeneratedGuid, InnerDependency);
