@@ -381,6 +381,9 @@ class GeneratedVSProject : IGeneratedProject
             _ => throw new PlatformNotSupportedException()
         };
 
+        // Visual studio always generate DynamicLinkLibrary.
+        ApplicationMacros += $"PLATFORM_DYNAMIC_LIBRARY=1;";
+
         static string ReplaceEscape(string S) => S.Replace("\\", "\\\\");
         ApplicationMacros += $"ENGINE_ROOT=\"{ReplaceEscape(Path.GetFullPath(SlnGenerator.Solution.CompiledRule.EngineRoot))}\";";
         ApplicationMacros += $"GAME_ROOT=\"{ReplaceEscape(Path.GetFullPath(Environment.CurrentDirectory))}\";";
