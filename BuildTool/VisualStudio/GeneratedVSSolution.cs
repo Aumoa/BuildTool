@@ -70,21 +70,35 @@ class GeneratedVSSolution : IGeneratedSolution
             Builder.AppendLine("EndProject");
         }
 
+        var PModule = GeneratedProjects[SlnGenerator.PrimaryModule.CompiledRule.Name];
+        var PrimaryModule = PModule.CompiledProject.CompiledRule.ModuleType switch
+        {
+            ModuleType.GameModule => "Windows",
+            ModuleType.ConsoleModule => "WindowsConsole",
+            _ => null
+        };
+
         // Generate C++ projects.
         List<string> ProjectsSort = new();
         foreach (var (Key, Value) in GeneratedProjects)
         {
             string DependencyProject = null;
-            
-            if (Value.CompiledProject.CompiledRule.TargetType == TargetType.Game)
+
+            //if (Value.CompiledProject.CompiledRule.TargetType == TargetType.Game)
+            //{
+            //    DependencyProject = Value.CompiledProject.CompiledRule.ModuleType switch
+            //    {
+            //        ModuleType.GameModule => "Windows",
+            //        ModuleType.ConsoleModule => "WindowsConsole",
+            //        _ => null
+            //    };
+            //}
+            //else
+            if (Value.CompiledProject.CompiledRule.ModuleType == ModuleType.Application
+                  || Value.CompiledProject.CompiledRule.ModuleType == ModuleType.ConsoleApplication)
             {
-                DependencyProject = Value.CompiledProject.CompiledRule.ModuleType switch
-                {
-                    ModuleType.GameModule => "Windows",
-                    ModuleType.ConsoleModule => "WindowsConsole",
-                    _ => null
-                };
-            };
+                DependencyProject = PModule.CompiledProject.CompiledRule.Name;
+            }
 
             string InnerDependency = "";
             if (!string.IsNullOrEmpty(DependencyProject))
@@ -98,7 +112,7 @@ class GeneratedVSSolution : IGeneratedSolution
 
             string ProjectDeclare = string.Format("Project(\"{{{0}}}\") = \"{1}\", \"{2}\", \"{{{3}}}\"\n{4}EndProject", CppProjectGuid, Key, Value.ProjectFile, Value.GeneratedGuid, InnerDependency);
 
-            if (Value.CompiledProject == SlnGenerator.PrimaryModule)
+            if (Value.CompiledProject.CompiledRule.Name == PrimaryModule)
             {
                 ProjectsSort.Insert(0, ProjectDeclare);
             }

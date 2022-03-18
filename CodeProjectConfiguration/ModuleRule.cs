@@ -39,11 +39,18 @@ public class ModuleRule
         }
     }
 
-    public string GetAPI(bool bExport)
+    public string GetAPI(bool bExport, bool bDynamicLink)
     {
         string ReplacedName = Name.Replace('.', '_');
         string API = ReplacedName.ToUpper() + "_API";
-        return API + (bExport ? "=__declspec(dllexport)" : "=__declspec(dllimport)");
+        if (bDynamicLink)
+        {
+            return API + (bExport ? "=__declspec(dllexport)" : "=__declspec(dllimport)");
+        }
+        else
+        {
+            return API;
+        }
     }
 
     static private string ReplaceEnvironmentPath(string InPath)

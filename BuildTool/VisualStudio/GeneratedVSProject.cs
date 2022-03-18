@@ -218,8 +218,8 @@ class GeneratedVSProject : IGeneratedProject
     public readonly Project CompiledProject;
     private bool bGenerated;
 
-    private List<BuildConfiguration> Configurations = new();
-    private ModuleRule Rule;
+    private readonly List<BuildConfiguration> Configurations = new();
+    private readonly ModuleRule Rule;
     public readonly Guid GeneratedGuid;
 
     public GeneratedVSProject(Project CompiledProject)
@@ -313,6 +313,7 @@ class GeneratedVSProject : IGeneratedProject
             {
                 IntermediateProjectPath = Path.Combine(IntermediateProjectPath, Split);
             }
+            IntermediateProjectPath = Path.Combine(IntermediateProjectPath, CompiledProject.CompiledRule.Name);
 
             // Create directory.
             new DirectoryReference(IntermediateProjectPath).CreateIfNotExists(true);
@@ -344,7 +345,7 @@ class GeneratedVSProject : IGeneratedProject
 
             if (Rule.ModuleType == ModuleType.GameModule || Rule.ModuleType == ModuleType.ConsoleModule)
             {
-                PreprocessorDefines.Add(Rule.GetAPI(false));
+                PreprocessorDefines.Add(Rule.GetAPI(false, true));
             }
         }
 
@@ -368,7 +369,7 @@ class GeneratedVSProject : IGeneratedProject
 
             if (Rule.ModuleType == ModuleType.GameModule || Rule.ModuleType == ModuleType.ConsoleModule)
             {
-                PreprocessorDefines.Add(Rule.GetAPI(true));
+                PreprocessorDefines.Add(Rule.GetAPI(true, true));
             }
         }
 
@@ -457,7 +458,7 @@ class GeneratedVSProject : IGeneratedProject
                 XmlElement InnerPropGroup = Project.NewElementPropertyGroup(Condition);
 			    {
 				    InnerPropGroup.NewElement("LinkIncremental", Config.bLinkIncremental.ToString());
-				    InnerPropGroup.NewElement("OutDir", "$(SolutionDir)Build\\");
+				    InnerPropGroup.NewElement("OutDir", "$(SolutionDir)Build\\Win64\\");
 				    InnerPropGroup.NewElement("IntDir", "$(SolutionDir)Intermediate\\$(Configuration)\\$(ProjectName)\\");
 				    InnerPropGroup.NewElement("TargetName", Rule.TargetName);
 			    }
@@ -560,6 +561,7 @@ class GeneratedVSProject : IGeneratedProject
 						    IntermediateProjectPath = Path.Combine(IntermediateProjectPath, Split);
 					    }
 
+                        IntermediateProjectPath = Path.Combine(IntermediateProjectPath, CompiledRule.Name);
                         IntermediateProjectPath = Path.Combine(IntermediateProjectPath, CompiledRule.Name + ".vcxproj");
 					    XmlElement ProjectReference = ItemGroup.NewElementItemInclude("ProjectReference", IntermediateProjectPath);
 					    {
@@ -644,7 +646,7 @@ class GeneratedVSProject : IGeneratedProject
 						    int LastIndex;
 						    while ((LastIndex = FilterPath.IndexOf('\\')) != -1)
 						    {
-							    FilterPath = FilterPath.Substring(0, LastIndex);
+							    FilterPath = FilterPath[..LastIndex];
 							    Filters.Add(FilterPath);
 						    }
 					    }
