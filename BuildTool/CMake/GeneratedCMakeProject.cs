@@ -97,10 +97,6 @@ class GeneratedCMakeProject : IGeneratedProject
                     SlnGenerator.SortedProjects.Add("LinuxCommon");
                     SlnGenerator.SortedProjects.Add("LinuxConsole");
                 }
-                else
-                {
-                    throw new Exception("Not supported module type.");
-                }
             }
             else
             {
