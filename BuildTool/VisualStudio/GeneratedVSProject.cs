@@ -533,7 +533,9 @@ class GeneratedVSProject : IGeneratedProject
 					    ItemGroup.NewElementItemInclude("ClCompile", IncludeItem.FullPath);
 				    }
 				    else if (IncludeItem.CompareExtension(".h")
-                        ||   IncludeItem.CompareExtension(".inl"))
+                        ||   IncludeItem.CompareExtension(".inl")
+                        ||   IncludeItem.CompareExtension(".hlsli")
+                        ||   IncludeItem.CompareExtension(".hlsl"))
 				    {
 					    ItemGroup.NewElementItemInclude("ClInclude", IncludeItem.FullPath);
 				    }
