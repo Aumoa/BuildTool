@@ -388,6 +388,9 @@ class GeneratedVSProject : IGeneratedProject
         static string ReplaceEscape(string S) => S.Replace("\\", "\\\\");
         ApplicationMacros += $"ENGINE_ROOT=\"{ReplaceEscape(Path.GetFullPath(SlnGenerator.Solution.CompiledRule.EngineRoot))}\";";
         ApplicationMacros += $"GAME_ROOT=\"{ReplaceEscape(Path.GetFullPath(Environment.CurrentDirectory))}\";";
+
+        // Project macros.
+        ApplicationMacros += $"SE_ASSEMBLY_NAME=\"{CompiledProject.CompiledRule.Name}\";";
     }
 
     private void GenerateXml()
@@ -621,7 +624,10 @@ class GeneratedVSProject : IGeneratedProject
 				    {
 					    InnerItem = ItemGroup.NewElementItemInclude("ClCompile", IncludeItem.FullPath);
 				    }
-				    else if (IncludeItem.CompareExtension(".h") || IncludeItem.CompareExtension(".inl"))
+				    else if (IncludeItem.CompareExtension(".h")
+                          || IncludeItem.CompareExtension(".inl")
+                          || IncludeItem.CompareExtension(".hlsli")
+                          || IncludeItem.CompareExtension(".hlsl"))
 				    {
 					    InnerItem = ItemGroup.NewElementItemInclude("ClInclude", IncludeItem.FullPath);
 				    }

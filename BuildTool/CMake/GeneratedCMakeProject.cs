@@ -118,7 +118,8 @@ class GeneratedCMakeProject : IGeneratedProject
     private List<string> PreprocessorDefines = new();
     private List<string> DisableSpecificWarnings = new();
     private List<string> AdditionalLibraries = new();
-    private Dictionary<string, string> ApplicationMacros = new();
+
+    private readonly Dictionary<string, string> ApplicationMacros = new();
 
     private void GenerateRuntime(CMakeGenerator SlnGenerator)
     {
@@ -160,6 +161,9 @@ class GeneratedCMakeProject : IGeneratedProject
                 PreprocessorDefines.Add(Rule.GetAPI(true, false));
             }
         }
+
+        // Project macros.
+        ApplicationMacros["SE_ASSEMBLY_NAME"] = $"\"{CompiledProject.CompiledRule.Name}\"";
     }
 
     private void GenerateCMakeLists(CMakeGenerator SlnGenerator)

@@ -42,6 +42,7 @@ public class ModuleRule
     public string GetAPI(bool bExport, bool bDynamicLink)
     {
         string ReplacedName = Name.Replace('.', '_');
+        ReplacedName = ReplacedName.Replace("-", "_");
         string API = ReplacedName.ToUpper() + "_API";
         if (bDynamicLink)
         {
