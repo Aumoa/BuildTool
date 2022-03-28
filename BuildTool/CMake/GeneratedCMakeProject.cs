@@ -163,7 +163,10 @@ class GeneratedCMakeProject : IGeneratedProject
         }
 
         // Project macros.
+        ApplicationMacros["SE_ASSEMBLY"] = $"{CompiledProject.CompiledRule.Name}";
+        ApplicationMacros["SE_ASSEMBLY_SAFE"] = $"{CompiledProject.CompiledRule.SafeName}";
         ApplicationMacros["SE_ASSEMBLY_NAME"] = $"\"{CompiledProject.CompiledRule.Name}\"";
+        ApplicationMacros["SE_ASSEMBLY_INFO"] = $"{CompiledProject.CompiledRule.SafeName}_AssemblyInfo";
     }
 
     private void GenerateCMakeLists(CMakeGenerator SlnGenerator)

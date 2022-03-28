@@ -41,9 +41,7 @@ public class ModuleRule
 
     public string GetAPI(bool bExport, bool bDynamicLink)
     {
-        string ReplacedName = Name.Replace('.', '_');
-        ReplacedName = ReplacedName.Replace("-", "_");
-        string API = ReplacedName.ToUpper() + "_API";
+        string API = SafeName.ToUpper() + "_API";
         if (bDynamicLink)
         {
             return API + (bExport ? "=__declspec(dllexport)" : "=__declspec(dllimport)");
@@ -93,6 +91,7 @@ public class ModuleRule
     }
 
     public string Name { get; set; }
+    public string SafeName => Name.Replace(".", "_").Replace("-", "_");
     public string TargetName { get; set; }
     public string RelativePath { get; set; }
     public TargetType TargetType { get; set; }
