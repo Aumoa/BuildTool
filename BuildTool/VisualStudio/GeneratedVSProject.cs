@@ -249,6 +249,7 @@ class GeneratedVSProject : IGeneratedProject
     }
 
     private VisualStudioVersion VSVersion;
+    private Solution Solution;
 
     private List<GeneratedVSProject> PublicDependencyModules = new();
     private List<GeneratedVSProject> PrivateDependencyModules = new();
@@ -259,6 +260,7 @@ class GeneratedVSProject : IGeneratedProject
     public void Generate(VisualStudioGenerator SlnGenerator)
     {
         VSVersion = SlnGenerator.VSVersion;
+        Solution = SlnGenerator.Solution;
 
         if (!bGenerated)
         {
@@ -345,7 +347,12 @@ class GeneratedVSProject : IGeneratedProject
 
             if (Rule.ModuleType == ModuleType.GameModule || Rule.ModuleType == ModuleType.ConsoleModule)
             {
-                PreprocessorDefines.Add(Rule.GetAPI(false, true));
+                string API = Rule.GetAPI(false, !Solution.CompiledRule.UseStaticLibraries);
+                if (!API.Contains('='))
+                {
+                    API += "=";
+                }
+                PreprocessorDefines.Add(API);
             }
         }
 
@@ -369,7 +376,12 @@ class GeneratedVSProject : IGeneratedProject
 
             if (Rule.ModuleType == ModuleType.GameModule || Rule.ModuleType == ModuleType.ConsoleModule)
             {
-                PreprocessorDefines.Add(Rule.GetAPI(true, true));
+                string API = Rule.GetAPI(true, !Solution.CompiledRule.UseStaticLibraries);
+                if (!API.Contains('='))
+                {
+                    API += "=";
+                }
+                PreprocessorDefines.Add(API);
             }
         }
 
@@ -433,7 +445,7 @@ class GeneratedVSProject : IGeneratedProject
 
 			    XmlElement InnerPropGroup = Project.NewElementPropertyGroup(Condition, "Configuration");
 			    {
-				    InnerPropGroup.NewElement("ConfigurationType", Rule.ModuleType.GetTypeString());
+				    InnerPropGroup.NewElement("ConfigurationType", Rule.ModuleType.GetTypeString(Solution));
 				    InnerPropGroup.NewElement("UseDebugLibraries", Config.bUseDebugLibrary.ToString());
 				    InnerPropGroup.NewElement("PlatformToolset", VSVersion.GetPlatformToolsets());
 				    InnerPropGroup.NewElement("WholeProgramOptimization", Config.bWholeProgramOptimization.ToString());

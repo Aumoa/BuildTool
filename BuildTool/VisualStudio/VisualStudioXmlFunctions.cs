@@ -85,7 +85,7 @@ static class VisualStudioXmlFunctions
         return Elem;
     }
 
-    public static string GetTypeString(this ModuleType MType)
+    public static string GetTypeString(this ModuleType MType, Solution InSolution)
     {
         switch (MType)
         {
@@ -94,7 +94,7 @@ static class VisualStudioXmlFunctions
                 return "Application";
             case ModuleType.GameModule:
             case ModuleType.ConsoleModule:
-                return "DynamicLibrary";
+                return InSolution.CompiledRule.UseStaticLibraries ? "StaticLibrary" : "DynamicLibrary";
             case ModuleType.Vcpkg:
             default:
                 return "Utility";

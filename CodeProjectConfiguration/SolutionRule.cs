@@ -13,4 +13,6 @@ public class SolutionRule
     public string EngineRoot;
     public string ThirdPartyRoot;
     public string PrimaryModule;
+
+    public bool UseStaticLibraries { get; set; }
 }
